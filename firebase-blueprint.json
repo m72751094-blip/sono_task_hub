@@ -1,0 +1,166 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and earning stats",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "fullName": { "type": "string" },
+        "email": { "type": "string" },
+        "balance": { "type": "number", "description": "Current available balance in PKR" },
+        "totalEarnings": { "type": "number", "description": "Cumulative earnings in PKR" },
+        "completedTasks": { "type": "number" },
+        "role": { "type": "string", "enum": ["user", "admin"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "fullName", "email", "balance", "totalEarnings", "completedTasks", "role", "createdAt"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "Earnings tasks created by admin",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "type": { "type": "string", "enum": ["subscribe", "like", "share", "watch", "comment"] },
+        "youtubeLink": { "type": "string" },
+        "rewardAmount": { "type": "number" },
+        "instructions": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "type", "youtubeLink", "rewardAmount", "instructions", "createdAt"]
+    },
+    "TaskSubmission": {
+      "title": "Task Submission",
+      "description": "Proof submitted by users for task completion",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "taskId": { "type": "string" },
+        "screenshotURL": { "type": "string" },
+        "proofText": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "rewardAmount": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "taskId", "status", "rewardAmount", "createdAt"]
+    },
+    "Withdrawal": {
+      "title": "Withdrawal Request",
+      "description": "User withdrawal request",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "amount": { "type": "number" },
+        "method": { "type": "string", "enum": ["JazzCash", "Easypaisa", "Bank Account"] },
+        "accountDetails": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "amount", "method", "accountDetails", "status", "createdAt"]
+    },
+    "Video": {
+      "title": "Video",
+      "description": "YouTube videos added by admin for users to watch",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "youtubeId": { "type": "string" },
+        "thumbnail": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "youtubeId", "createdAt"]
+    },
+    "Feedback": {
+      "title": "Feedback",
+      "description": "User reviews and feedback",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "username": { "type": "string" },
+        "message": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "username", "message", "status", "createdAt"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "In-app notifications",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Target user ID or 'all' for announcements" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "type": { "type": "string", "enum": ["task_status", "withdrawal_status", "announcement"] },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "message", "type", "read", "createdAt"]
+    },
+    "CommunityPost": {
+      "title": "Community Post",
+      "description": "Posts created by admin in the community section",
+      "type": "object",
+      "properties": {
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "content": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["authorId", "authorName", "content", "createdAt"]
+    },
+    "CommunityComment": {
+      "title": "Community Comment",
+      "description": "Comments made by users on community posts",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "content": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["postId", "userId", "userName", "content", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/tasks/{taskId}": {
+      "schema": "Task",
+      "description": "Available tasks"
+    },
+    "/taskSubmissions/{submissionId}": {
+      "schema": "TaskSubmission",
+      "description": "User task submissions"
+    },
+    "/withdrawals/{withdrawalId}": {
+      "schema": "Withdrawal",
+      "description": "Withdrawal requests"
+    },
+    "/videos/{videoId}": {
+      "schema": "Video",
+      "description": "Video hub items"
+    },
+    "/feedback/{feedbackId}": {
+      "schema": "Feedback",
+      "description": "User feedback"
+    },
+    "/notifications/{notificationId}": {
+      "schema": "Notification",
+      "description": "Notifications"
+    },
+    "/communityPosts/{postId}": {
+      "schema": "CommunityPost",
+      "description": "Admin posts for community"
+    },
+    "/communityComments/{commentId}": {
+      "schema": "CommunityComment",
+      "description": "User comments on posts"
+    }
+  }
+}

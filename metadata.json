@@ -1,0 +1,8 @@
+{
+  "name": "Sono Task Hub",
+  "description": "A modern task earning dashboard where users earn rewards for completing YouTube-related tasks. Features include secure withdrawal systems, admin task management, and real-time notifications.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
